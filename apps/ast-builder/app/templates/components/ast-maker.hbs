@@ -1,0 +1,48 @@
+<div class="grid-col">
+  <div class="grid-row">
+    <div class="editor">
+      {{ivy-codemirror 
+        value=this.code 
+        options=(hash 
+        lineNumbers=true 
+        mode=this.mode 
+        matchBrackets=true 
+        theme=this.theme) 
+        valueUpdated=(action (mut this.code))
+      }}
+    </div>
+  <div class="gutter"></div>
+    <div class="editor">
+
+      {{ivy-codemirror value=this.nodeApi options=(hash 
+        lineNumbers=true 
+        mode="javascript" 
+        theme=this.theme 
+        matchBrackets=true 
+        autoIndent=true )}}
+    
+    </div>
+  </div>
+  <div class="gutter"></div>
+  <div class="grid-row">
+    <div class="editor">
+      {{ivy-codemirror 
+        value=this.ast 
+        options=(hash 
+        mode=this.jsonMode 
+        theme=this.theme 
+        foldGutter=true 
+        lineNumbers=true 
+        lineWrapping=true 
+        gutters=this.gutters
+      )}}
+    </div>
+  <div class="gutter"></div>
+    <div class="editor">
+      {{ivy-codemirror value=this.output options=(hash 
+        lineNumbers=true 
+        mode=this.mode 
+        theme=this.theme )}}
+    </div>
+  </div>
+</div>

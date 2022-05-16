@@ -1,0 +1,76 @@
+{
+  "name": "ast-node-builder",
+  "version": "4.0.0",
+  "description": "AST Node Building api",
+  "main": "index.js",
+  "module": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "deploy-patch": "npm version patch && git push && git push --tags && npm publish",
+    "deploy-minor": "npm version minor && git push && git push --tags && npm publish",
+    "coverage": "coveralls --verbose",
+    "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
+    "lint": "eslint .",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajasegar/ast-node-builder.git"
+  },
+  "keywords": [
+    "ast",
+    "abstract",
+    "syntax",
+    "tree",
+    "javascript"
+  ],
+  "author": "Rajasegar Chandran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rajasegar/ast-node-builder/issues"
+  },
+  "homepage": "https://github.com/rajasegar/ast-node-builder#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/parser": "^7.7.4",
+    "@babel/preset-env": "^7.16.11",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "babel-jest": "^27.5.1",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "globby": "^10.0.1",
+    "jest": "^27.5.1",
+    "recast": "^0.20.5",
+    "semantic-release": "^18.0.0"
+  },
+  "dependencies": {
+    "ember-template-recast": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "release(version): Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+}
