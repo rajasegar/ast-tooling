@@ -12,7 +12,8 @@
     "coverage": "coveralls --verbose",
     "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
     "lint": "eslint .",
-    "deploy": "semantic-release --branches main"
+    "deploy": "semantic-release",
+		"srd": "semantic-release -d"
   },
   "repository": {
     "type": "git",
@@ -55,6 +56,7 @@
     "node": ">=14.0.0"
   },
   "release": {
+		"branches": [{ "name": "main", "prerelease": true}],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
