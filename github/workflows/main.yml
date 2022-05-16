@@ -3,7 +3,7 @@ name: Node CI
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -35,4 +35,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm run semantic-release
+      run: npm run deploy
