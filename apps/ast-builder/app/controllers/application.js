@@ -40,7 +40,8 @@ export default class ApplicationController extends Controller {
   }
 
   get nodeBuilderVersion() {
-    return ENV.pkg.dependencies['ast-node-builder'];
+    // return ENV.pkg.dependencies['ast-node-builder'];
+    return '4.1.0';
   }
 
   get mode() {

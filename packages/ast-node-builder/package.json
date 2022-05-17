@@ -11,9 +11,7 @@
     "deploy-minor": "npm version minor && git push && git push --tags && npm publish",
     "coverage": "coveralls --verbose",
     "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
-    "lint": "eslint .",
-    "ci:version": "changeset version",
-    "ci:publish": "changeset publish"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
