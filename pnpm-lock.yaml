@@ -4,11 +4,9 @@ importers:
 
   .:
     specifiers:
-      '@changesets/cli': ^2.22.0
       prettier: ^2.6.2
       turbo: latest
     devDependencies:
-      '@changesets/cli': 2.22.0
       prettier: 2.6.2
       turbo: 1.2.9
 
