@@ -21,7 +21,7 @@
     "dev": "ember serve",
     "test": "npm-run-all lint test:*",
     "test:ember": "ember test",
-    "deploygh": "git push && npm run build && gh-pages -d dist",
+    "deploy": "npm run build",
     "ghpages": "gh-pages -d dist"
   },
   "devDependencies": {
