@@ -35,9 +35,6 @@
     "@babel/core": "^7.17.8",
     "@babel/parser": "^7.7.4",
     "@babel/preset-env": "^7.16.11",
-    "@changesets/cli": "^2.22.0",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
     "babel-jest": "^27.5.1",
     "coveralls": "^3.1.0",
     "eslint": "^7.32.0",
@@ -46,32 +43,12 @@
     "eslint-plugin-standard": "^5.0.0",
     "globby": "^10.0.1",
     "jest": "^27.5.1",
-    "recast": "^0.20.5",
-    "semantic-release": "^19.0.0"
+    "recast": "^0.20.5"
   },
   "dependencies": {
     "ember-template-recast": "^6.0.0"
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "CHANGELOG.md"
-          ],
-          "message": "release(version): Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ],
-      "@semantic-release/github"
-    ]
   }
 }
