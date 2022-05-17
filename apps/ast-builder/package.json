@@ -1,6 +1,6 @@
 {
   "name": "ast-builder",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Build your ASTs directly using code",
   "repository": "",

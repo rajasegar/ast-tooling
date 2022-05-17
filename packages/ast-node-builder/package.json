@@ -1,6 +1,6 @@
 {
   "name": "ast-node-builder",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "AST Node Building api based on jscodeshift",
   "main": "index.js",
   "module": "index.js",
