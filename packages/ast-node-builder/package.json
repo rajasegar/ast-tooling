@@ -12,7 +12,8 @@
     "coverage": "coveralls --verbose",
     "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
     "lint": "eslint .",
-    "deploy": "changeset version && changeset publish"
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish"
   },
   "repository": {
     "type": "git",
