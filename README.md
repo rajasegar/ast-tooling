@@ -1,5 +1,7 @@
 # AST Tooling
 
+All the AST tooling library in one place using Turborepo and pnpm
+
 This is an official starter turborepo.
 
 ## What's inside?
@@ -8,13 +10,11 @@ This turborepo uses [pnpm](https://pnpm.io) as a packages manager. It includes t
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
+- `AST-Builder`: a [Ember.js](https://emberjs.com) app
+- `ast-node-builder`: an npm library used by  `AST-Builder`
 - `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Utilities
 
@@ -33,7 +33,7 @@ This repository is used in the `npx create-turbo@latest` command, and selected w
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd ast-tooling
 pnpm run build
 ```
 
@@ -42,7 +42,7 @@ pnpm run build
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd ast-tooling
 pnpm run dev
 ```
 
@@ -53,7 +53,7 @@ Turborepo can use a technique known as [Remote Caching (Beta)](https://turborepo
 By default, Turborepo will cache locally. To enable Remote Caching (Beta) you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
 
 ```
-cd my-turborepo
+cd ast-tooling
 pnpx turbo login
 ```
 
