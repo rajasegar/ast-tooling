@@ -22,7 +22,7 @@
     "ast-explorer"
   ],
   "author": "Rajasegar Chandran",
-  "repository": "https://github.com/rajasegar/ast-node-finder",
+  "repository": "https://github.com/rajasegar/ast-tooling",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "7.17.8",

@@ -10,8 +10,9 @@ This turborepo uses [pnpm](https://pnpm.io) as a packages manager. It includes t
 
 ### Apps and Packages
 
-- `AST-Builder`: a [Ember.js](https://emberjs.com) app
-- `ast-node-builder`: an npm library used by  `AST-Builder`
+- `web`: a web app called `AST-Tooling`
+- `ast-node-builder`: an npm library used by  `AST-Tooling`
+- `ast-node-finder`: an npm library used by  `AST-Tooling`
 - `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
