@@ -1,0 +1,13 @@
+{
+  "include": ["./src/**/*.ts"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationDir": "."
+  }
+}

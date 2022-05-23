@@ -1,0 +1,80 @@
+{
+  "name": "ast-node-finder",
+  "version": "3.0.6",
+  "description": "JSCodeshift find api automatically generated from code",
+  "main": "dist/ast-node-finder.cjs.js",
+  "module": "dist/ast-node-finder.esm.js",
+  "browser": "dist/ast-node-finder.umd.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "test": "jest",
+    "deploy": "npm version patch && git push && git push --tags && npm publish",
+    "deploy-minor": "npm version minor && git push && git push --tags && npm publish",
+    "coverage": "coveralls",
+    "lint": "eslint .",
+    "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
+    "semantic-release": "semantic-release"
+  },
+  "keywords": [
+    "ast",
+    "jscodeshift",
+    "ast-explorer"
+  ],
+  "author": "Rajasegar Chandran",
+  "repository": "https://github.com/rajasegar/ast-node-finder",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "7.17.8",
+    "@babel/preset-env": "7.16.11",
+    "@babel/preset-typescript": "7.16.7",
+    "@rollup/plugin-commonjs": "21.0.3",
+    "@rollup/plugin-node-resolve": "13.1.3",
+    "@rollup/plugin-typescript": "8.3.1",
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/git": "10.0.1",
+    "@types/common-tags": "^1.8.1",
+    "babel-jest": "27.5.1",
+    "coveralls": "3.1.1",
+    "eslint": "8.12.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-standard": "5.0.0",
+    "jest": "27.5.1",
+    "rollup": "2.70.1",
+    "semantic-release": "19.0.2",
+    "ts-node": "10.7.0",
+    "tslib": "2.3.1",
+    "typescript": "4.6.3"
+  },
+  "dependencies": {
+    "common-tags": "^1.8.2",
+    "ember-template-recast": "^6.1.3",
+    "recast": "^0.20.5"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "release(version): Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+}
