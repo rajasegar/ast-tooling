@@ -1,0 +1,95 @@
+@import "tabs.css";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+		height: 100%;
+}
+
+body {
+    font-family: sans-serif;
+}
+.split {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter {
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: row-resize;
+}
+#split-0 {
+    min-height: calc(100vh - 100px);
+}
+
+#split-01 {
+    /* background: lightgreen; */
+    width: 100%;
+    overflow-y: auto;
+}
+#split-02 {
+    /* background: lightblue; */
+    width: 100%;
+}
+#split-11 {
+    /* background: lightcoral; */
+    width: 100%;
+    overflow-y: auto;
+}
+#split-12 {
+    /* background: lightcyan; */
+    width: 100%;
+    overflow-y: auto;
+}
+header {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    display: flex;
+		padding: 0 1em;
+}
+
+footer {
+  width: 100%;
+  margin: 0 auto;
+  background: #eee;
+  padding: 5px 0;
+  border-top: 1px solid #ddd;
+  height: 40px;
+  text-align: center;
+    line-height: 50px;
+}
+
+select {
+  margin: 10px;
+  background: white;
+border: 1px solid gray;
+border-radius: 4px;
+padding: 2px;
+}
+
+h1 {
+    font-weight: lighter;
+}
+
+#ast-editor {
+		height: 100%;
+		overflow: auto;
+}

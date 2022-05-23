@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AST Tooling</title>
+  </head>
+  <body>
+    <header>
+      <h1>AST Tooling</h1>
+      <select id="lst-mode">
+        <option value="javascript">JavaScript</option>
+        <option value="handlebars">Handlebars</option>
+      </select>
+    </header>
+    <div class="split">
+      <div id="split-0">
+				<div id="split-01">
+					<div id="editor"></div>
+				</div>
+				<div id="split-02">
+					<div class="tabs">
+						<div role="tablist" aria-labelledby="tablist-1" class="automatic">
+							<button id="tab-1" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-1">
+								<span class="focus">Builder API</span>
+							</button>
+							<button id="tab-2" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-2" tabindex="-1">
+								<span class="focus">Finder API </span>
+							</button>
+						</div>
+
+						<div id="tabpanel-1" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
+							<div id="dest-editor"></div>
+						</div>
+						<div id="tabpanel-2" role="tabpanel" tabindex="0" aria-labelledby="tab-2" class="is-hidden">
+							<div id="finder-editor"></div>
+						</div>
+					</div>
+					
+				</div>
+      </div>
+      <div id="split-1">
+				<div id="split-11">
+					<div id="ast-editor"></div>
+				</div>
+	    </div>
+    </div>
+    <footer>
+			<p>
+				<a href="https://astexplorer.net/">AST-Explorer</a> |
+				<a href="https://github.com/rajasegar/ast-tooling">Github</a> |
+				<a href="https://github.com/rajasegar/ast-tooling/issues">Report issues</a> 
+			</p>
+		</footer>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
