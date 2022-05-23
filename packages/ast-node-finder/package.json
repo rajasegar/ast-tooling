@@ -16,8 +16,7 @@
     "deploy-minor": "npm version minor && git push && git push --tags && npm publish",
     "coverage": "coveralls",
     "lint": "eslint .",
-    "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\"",
-    "semantic-release": "semantic-release"
+    "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\""
   },
   "keywords": [
     "ast",
@@ -34,8 +33,6 @@
     "@rollup/plugin-commonjs": "21.0.3",
     "@rollup/plugin-node-resolve": "13.1.3",
     "@rollup/plugin-typescript": "8.3.1",
-    "@semantic-release/changelog": "6.0.1",
-    "@semantic-release/git": "10.0.1",
     "@types/common-tags": "^1.8.1",
     "babel-jest": "27.5.1",
     "coveralls": "3.1.1",
@@ -45,7 +42,6 @@
     "eslint-plugin-standard": "5.0.0",
     "jest": "27.5.1",
     "rollup": "2.70.1",
-    "semantic-release": "19.0.2",
     "ts-node": "10.7.0",
     "tslib": "2.3.1",
     "typescript": "4.6.3"
@@ -57,24 +53,5 @@
   },
   "engines": {
     "node": ">=12.0.0"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "CHANGELOG.md"
-          ],
-          "message": "release(version): Release ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ],
-      "@semantic-release/github"
-    ]
   }
 }
