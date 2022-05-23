@@ -12,8 +12,6 @@
     "start": "rollup -c -w",
     "build": "rollup -c",
     "test": "jest",
-    "deploy": "npm version patch && git push && git push --tags && npm publish",
-    "deploy-minor": "npm version minor && git push && git push --tags && npm publish",
     "coverage": "coveralls",
     "lint": "eslint .",
     "debug": "mocha --forbid-only --inspect-brk \"test/**/*.test.js\""
