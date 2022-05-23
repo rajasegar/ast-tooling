@@ -1,5 +1,11 @@
 ## [3.0.6](https://github.com/rajasegar/ast-node-finder/compare/v3.0.5...v3.0.6) (2022-04-04)
 
+## 4.0.1
+
+### Patch Changes
+
+- b6e4485: changing github repo url for npm
+
 ## 4.0.0
 
 ### Major Changes
