@@ -4,17 +4,9 @@ import { json } from "@codemirror/lang-json";
 import { StateField } from "@codemirror/state";
 import { showPanel } from "@codemirror/panel";
 
-import { parse } from "recast";
-import { es6, glimmer as hbsBuilder } from "ast-node-builder";
-const { buildAST } = es6;
-
-import { findQuery } from "ast-node-finder";
+import { getBuilderApi, getFinderApi, getAstJson } from "./utils";
 
 import { store } from "./store";
-
-function filterAstNodes(key, value) {
-  return ["loc", "tokens"].includes(key) ? undefined : value;
-}
 
 function createInputPanel() {
   return createHelpPanel("Enter the input code here to transform:");
@@ -43,61 +35,42 @@ const outputHelpPanelState = StateField.define({
 });
 
 export default async function () {
-  const sampleCode = `foo()`;
-
   const extensions = [basicSetup, javascript()];
 
-  let { mode: oldMode } = store.getState();
-  const inputCode = oldMode === "javascript" ? `foo()` : `{{hello-world}}`;
+  const { mode } = store.getState();
+  const inputCode = mode === "javascript" ? `foo()` : `{{hello-world}}`;
 
-  const destEditor = new EditorView({
+  const builderEditor = new EditorView({
     state: EditorState.create({
-      doc: getBuilderApi(inputCode),
+      doc: getBuilderApi(inputCode, mode),
       extensions: [...extensions],
     }),
     parent: document.getElementById("dest-editor"),
   });
 
-  function getBuilderApi(code) {
-    const ast = parse(code);
-    const builderApi = buildAST(ast);
-    return builderApi.join("\n");
-  }
-
-  function getFinderApi(code) {
-    const ast = parse(code);
-    const api = findQuery(ast.program.body[0].expression);
-    console.log(api);
-    return api;
-  }
-
-  function getAstJson(code) {
-    const ast = parse(code);
-    return JSON.stringify(ast, filterAstNodes, 2);
-  }
-
   const listenChangesExtension = StateField.define({
     create: () => null,
     update: async (value, transaction) => {
       if (transaction.docChanged) {
+        const { mode } = store.getState();
         const _input = transaction.newDoc.toString();
-        destEditor.setState(
+        builderEditor.setState(
           EditorState.create({
-            doc: getBuilderApi(_input),
+            doc: getBuilderApi(_input, mode),
             extensions,
           })
         );
 
         astEditor.setState(
           EditorState.create({
-            doc: getAstJson(_input),
+            doc: getAstJson(_input, mode),
             extensions: [basicSetup, json()],
           })
         );
 
         finderEditor.setState(
           EditorState.create({
-            doc: getFinderApi(_input),
+            doc: getFinderApi(_input, mode),
             extensions: [basicSetup, javascript()],
           })
         );
@@ -116,7 +89,7 @@ export default async function () {
 
   const astEditor = new EditorView({
     state: EditorState.create({
-      doc: getAstJson(inputCode),
+      doc: getAstJson(inputCode, mode),
       extensions: [basicSetup, json()],
     }),
     parent: document.getElementById("ast-editor"),
@@ -124,43 +97,49 @@ export default async function () {
 
   const finderEditor = new EditorView({
     state: EditorState.create({
-      doc: getFinderApi(inputCode),
+      doc: getFinderApi(inputCode, mode),
       extensions: [basicSetup, javascript()],
     }),
     parent: document.getElementById("finder-editor"),
   });
 
-  // Update input code
-  const _inputCode = oldMode === "javascript" ? `foo()` : `{{hello-world}}`;
-  editor.setState(
-    EditorState.create({
-      doc: _inputCode,
-      extensions: [...extensions, listenChangesExtension],
-    })
-  );
+  function updateEditors(mode) {
+    // Update input code
+    const _inputCode = mode === "javascript" ? `foo()` : `{{hello-world}}`;
+    const _outputCode = mode === "javascript" ? `foo.bar()` : `<HelloWorld />`;
+    editor.setState(
+      EditorState.create({
+        doc: _inputCode,
+        extensions: [...extensions, listenChangesExtension],
+      })
+    );
 
-  // Update output code
-  const _outputCode = oldMode === "javascript" ? `foo.bar()` : `<HelloWorld />`;
-  destEditor.setState(
-    EditorState.create({
-      doc: getBuilderApi(_inputCode),
-      extensions: [...extensions],
-    })
-  );
+    // Update output code
+    builderEditor.setState(
+      EditorState.create({
+        doc: getBuilderApi(_inputCode, mode),
+        extensions: [...extensions],
+      })
+    );
 
-  astEditor.setState(
-    EditorState.create({
-      doc: getAstJson(inputCode),
-      extensions: [basicSetup, json()],
-    })
-  );
+    astEditor.setState(
+      EditorState.create({
+        doc: getAstJson(_inputCode, mode),
+        extensions: [basicSetup, json()],
+      })
+    );
 
-  finderEditor.setState(
-    EditorState.create({
-      doc: getFinderApi(inputCode),
-      extensions: [basicSetup, javascript()],
-    })
-  );
+    finderEditor.setState(
+      EditorState.create({
+        doc: getFinderApi(_inputCode, mode),
+        extensions: [basicSetup, javascript()],
+      })
+    );
+  }
 
-  store.subscribe(async (action) => {});
+  store.subscribe(async () => {
+    const { mode } = store.getState();
+    console.log(mode);
+    updateEditors(mode);
+  });
 }

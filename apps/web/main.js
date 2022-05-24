@@ -12,3 +12,9 @@ setupEditor();
 document.getElementById("lst-mode").addEventListener("change", (ev) => {
   store.dispatch(setMode(ev.target.value));
 });
+
+store.subscribe(() => {
+  const { mode } = store.getState();
+  console.log(mode);
+  document.getElementById("lst-mode").value = mode;
+});
