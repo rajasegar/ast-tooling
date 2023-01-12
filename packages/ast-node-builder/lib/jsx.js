@@ -1,10 +1,6 @@
 import * as base from "./core/base.js";
 
-import {
-  stringLiteral,
-  numericLiteral,
-  booleanLiteral,
-} from "./babel/base.js";
+import { stringLiteral, numericLiteral, booleanLiteral } from "./babel/base.js";
 
 // TODO: Remove from here
 function binaryExpression(node) {
@@ -34,8 +30,8 @@ function binaryExpression(node) {
       _left = numericLiteral(left);
       break;
 
-    default:
-      console.log("JSX::binaryExpression::left => ", left.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("JSX::binaryExpression::left => ", left.type);
       break;
   }
 
@@ -56,8 +52,8 @@ function binaryExpression(node) {
       _right = numericLiteral(right);
       break;
 
-    default:
-      console.log("ES6::binaryExpression::right => ", right.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::binaryExpression::right => ", right.type);
       break;
   }
 
@@ -101,6 +97,10 @@ function buildAttributeValue(node) {
 
     case "JSXExpressionContainer":
       str = expressionContainer(node);
+      break;
+
+    case "Literal":
+      str = `j.jsxLiteral(${node.value})`;
       break;
 
     default:
@@ -156,8 +156,8 @@ function jsxMemberExpression(node) {
       obj = identifier(object);
       break;
 
-    default:
-      console.log("jsxMemberExpression::object => ", object.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("jsxMemberExpression::object => ", object.type);
       break;
   }
 
@@ -168,8 +168,8 @@ function jsxMemberExpression(node) {
       prop = identifier(property);
       break;
 
-    default:
-      console.log("jsxMemberExpression.property => ", property.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("jsxMemberExpression.property => ", property.type);
       break;
   }
 
@@ -294,8 +294,8 @@ function memberExpression(node) {
       obj = arrayExpression(object);
       break;
 
-    default:
-      console.log("memberExpression => ", object.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("memberExpression => ", object.type);
       break;
   }
 
@@ -314,8 +314,8 @@ function memberExpression(node) {
       prop = callExpression(property);
       break;
 
-    default:
-      console.log("memberExpression.property => ", property.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("memberExpression.property => ", property.type);
       break;
   }
 
@@ -340,8 +340,8 @@ function buildArgs(params) {
       case "StringLiteral":
         return base.literal(p);
 
-      default:
-        console.log("buildArgs => ", p.type); // eslint-disable-line
+      default: // eslint-disable-line
+        console.log("buildArgs => ", p.type);
         return "";
     }
   });
@@ -441,7 +441,4 @@ function element(node) {
   return str;
 }
 
-export {
-  attribute,
-  element,
-};
+export { attribute, element };

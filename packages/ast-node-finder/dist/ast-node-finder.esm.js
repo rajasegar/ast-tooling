@@ -45,14 +45,15 @@ function calleeQuery(node) {
       ${obj},
       ${prop}
     }`;
-        //} else if (node.type === 'CallExpression') {
-        //str = ` ${calleeQuery(node.callee)} `;
+    }
+    else if (node.type === 'CallExpression') {
+        str = ` ${calleeQuery(node.callee)} `;
     }
     else if (node.type === 'Identifier') {
         str = `callee: { name: '${node.name}' }`;
     }
     else {
-        console.error('Unknown node type in calleeQuery');
+        console.error('calleeQuery: ', node.type);
     }
     return str;
 }
@@ -174,6 +175,24 @@ function exportDefaultDeclarationQuery$1(node) {
     }
     return str;
 }
+function exportNamedDeclarationQuery$1(node) {
+    let str = '';
+    switch (node.declaration.type) {
+        case 'CallExpression':
+            str = `root.find(j.ExportNamedDeclaration, {
+  declaration: { ${calleeQuery(node.declaration.callee)} }
+  })`;
+            break;
+        case 'FunctionDeclaration':
+            str = `root.find(j.ExportNamedDeclaration, {
+declaration: { id: { name: '${node.declaration.id.name}' } }
+  })`;
+            break;
+        default:
+            console.log('exportNamedDeclaration => ', node.declaration.type);
+    }
+    return str;
+}
 function identifier$2(node) {
     let str = '';
     str = `root.find(j.Identifier, {
@@ -233,6 +252,7 @@ var query = /*#__PURE__*/Object.freeze({
   variableDeclaratorQuery: variableDeclaratorQuery$1,
   importDeclarationQuery: importDeclarationQuery$1,
   exportDefaultDeclarationQuery: exportDefaultDeclarationQuery$1,
+  exportNamedDeclarationQuery: exportNamedDeclarationQuery$1,
   identifier: identifier$2,
   functionDeclaration: functionDeclaration$2
 });
@@ -592,7 +612,7 @@ var glimmer = /*#__PURE__*/Object.freeze({
   dispatchNodes: dispatchNodes$1
 });
 
-const { assignmentExpression, callExpressionQuery, memberExpressionQuery, literalQuery, newExpressionQuery, expressionStatementQuery, variableDeclaratorQuery, importDeclarationQuery, exportDefaultDeclarationQuery, identifier, functionDeclaration } = query;
+const { assignmentExpression, callExpressionQuery, memberExpressionQuery, literalQuery, newExpressionQuery, expressionStatementQuery, variableDeclaratorQuery, importDeclarationQuery, exportDefaultDeclarationQuery, exportNamedDeclarationQuery, identifier, functionDeclaration } = query;
 // Build the jscodeshift find query from nodes
 function findQuery(node) {
     let str = '';
@@ -611,6 +631,9 @@ function findQuery(node) {
             break;
         case 'ExportDefaultDeclaration':
             str = exportDefaultDeclarationQuery(node);
+            break;
+        case 'ExportNamedDeclaration':
+            str = exportNamedDeclarationQuery(node);
             break;
         case 'ExpressionStatement':
             str = expressionStatementQuery(node);

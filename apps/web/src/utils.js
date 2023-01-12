@@ -22,7 +22,7 @@ export function getFinderApi(code, mode) {
   const ast = parser(code);
   const api =
     mode === "javascript"
-      ? findQuery(ast.program.body[0].expression)
+      ? findQuery(ast.program.body[0])
       : hbsFinder.dispatchNodes(ast).join("\n");
   return api;
 }

@@ -16,6 +16,7 @@ const {
   variableDeclaratorQuery,
   importDeclarationQuery,
   exportDefaultDeclarationQuery,
+  exportNamedDeclarationQuery,
   identifier,
   functionDeclaration
 } = query;
@@ -43,6 +44,10 @@ function findQuery(node: Node) {
 
     case 'ExportDefaultDeclaration':
       str = exportDefaultDeclarationQuery(node);
+      break;
+
+    case 'ExportNamedDeclaration':
+      str = exportNamedDeclarationQuery(node);
       break;
 
     case 'ExpressionStatement':

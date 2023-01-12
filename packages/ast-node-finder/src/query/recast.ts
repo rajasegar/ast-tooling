@@ -57,8 +57,8 @@ function calleeQuery(node: Node):string {
       ${prop}
     }`;
 
-  //} else if (node.type === 'CallExpression') {
-    //str = ` ${calleeQuery(node.callee)} `;
+  } else if (node.type === 'CallExpression') {
+    str = ` ${calleeQuery(node.callee)} `;
 
   } else if (node.type === 'Identifier') {
 
@@ -66,7 +66,7 @@ function calleeQuery(node: Node):string {
   }
   else {
 
-    console.error('Unknown node type in calleeQuery');
+			console.error('calleeQuery: ', node.type);
   }
 
   return str;
@@ -213,6 +213,29 @@ function exportDefaultDeclarationQuery(node: Node): string {
   return str;
 }
 
+function exportNamedDeclarationQuery(node: Node): string {
+  let str = '';
+  switch(node.declaration.type) {
+
+    case 'CallExpression':
+  str =   `root.find(j.ExportNamedDeclaration, {
+  declaration: { ${calleeQuery(node.declaration.callee)} }
+  })`;
+      break;
+
+			case 'FunctionDeclaration':
+  str =   `root.find(j.ExportNamedDeclaration, {
+declaration: { id: { name: '${node.declaration.id.name}' } }
+  })`;
+					break;
+
+    default:
+      console.log('exportNamedDeclaration => ', node.declaration.type);
+  }
+
+  return str;
+}
+
 function identifier(node: Node): string {
   let str = '';
   str = `root.find(j.Identifier, {
@@ -277,6 +300,7 @@ export {
   variableDeclaratorQuery,
   importDeclarationQuery,
   exportDefaultDeclarationQuery,
+  exportNamedDeclarationQuery,
   identifier,
   functionDeclaration
 };

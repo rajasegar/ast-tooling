@@ -92,8 +92,8 @@ function binaryExpression(node) {
       _left = memberExpression(left);
       break;
 
-    default:
-      console.log("ES6::binaryExpression::left => ", left.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::binaryExpression::left => ", left.type);
       break;
   }
 
@@ -114,8 +114,8 @@ function binaryExpression(node) {
       _right = numericLiteral(right);
       break;
 
-    default:
-      console.log("ES6::binaryExpression::right => ", right.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::binaryExpression::right => ", right.type);
       break;
   }
 
@@ -162,8 +162,8 @@ function switchStatement(node) {
       d = identifier(discriminant);
       break;
 
-    default:
-      console.log("switchStatement::discriminant => ", discriminant.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("switchStatement::discriminant => ", discriminant.type);
       break;
   }
   str = `j.switchStatement(${d},[${buildSwitchCases(cases)}])`;
@@ -177,8 +177,8 @@ function buildSwitchCases(cases) {
       let str = "";
       if (test) {
         switch (test.type) {
-          default:
-            console.log("buildSwitchCases => ", test.type); // eslint-disable-line
+          default: // eslint-disable-line
+            console.log("buildSwitchCases => ", test.type);
             break;
         }
       } else {
@@ -282,8 +282,8 @@ function forStatement(node) {
       _init = variableDeclaration(init);
       break;
 
-    default:
-      console.log("forStatement::init =>", init.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("forStatement::init =>", init.type);
       break;
   }
 
@@ -293,8 +293,8 @@ function forStatement(node) {
       _test = binaryExpression(test);
       break;
 
-    default:
-      console.log("forStatement::test => ", test.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("forStatement::test => ", test.type);
       break;
   }
 
@@ -304,8 +304,8 @@ function forStatement(node) {
       _update = updateExpression(update);
       break;
 
-    default:
-      console.log("forStatement::test => ", update.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("forStatement::test => ", update.type);
       break;
   }
 
@@ -460,8 +460,8 @@ function throwStatement(node) {
       arg = identifier(argument);
       break;
 
-    default:
-      console.log("thowStatement => ", argument.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("thowStatement => ", argument.type);
       break;
   }
   return `j.throwStatement(
@@ -588,8 +588,8 @@ function buildValue(node) {
       return element(node);
     case "UpdateExpression":
       return updateExpression(node);
-    default:
-      console.log("ES6::buildValue => ", node.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::buildValue => ", node.type);
       return "";
   }
 }
@@ -633,8 +633,8 @@ function buildBlock(body) {
       case "WhileStatement":
         return whileStatement(node);
 
-      default:
-        console.log("ES6::buildBlock => ", node.type); // eslint-disable-line
+      default: // eslint-disable-line
+        console.log("ES6::buildBlock => ", node.type);
         return "";
     }
   });
@@ -689,8 +689,8 @@ function expressionStatement(node) {
       str = element(expression);
       break;
 
-    default:
-      console.log("ES6::expressionStatement => ", expression.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::expressionStatement => ", expression.type);
       break;
   }
 
@@ -728,6 +728,13 @@ function arrowFunctionExpression(node) {
       [${buildArgs(params)}],
       ${identifier(body)}
       )`;
+      break;
+
+    case "JSXElement":
+      str = `j.arrowFunctionExpression(
+				[${buildArgs(params)}],
+				${identifier(body)}
+				)`;
       break;
 
     default:
@@ -795,8 +802,12 @@ function buildArgs(params) {
 
       case "ObjectPattern":
         return objectPattern(p);
-      default:
-        console.log("ES6::buildArgs => ", p.type); // eslint-disable-line
+
+      case "JSXElement":
+        return element(p);
+
+      default: // eslint-disable-line
+        console.log("ES6::buildArgs => ", p.type);
         return "";
     }
   });
@@ -1140,8 +1151,8 @@ function returnStatement(node) {
       str = element(arg);
       break;
 
-    default:
-      console.log("ES6::returnStatement => ", arg.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::returnStatement => ", arg.type);
       break;
   }
 
@@ -1208,8 +1219,8 @@ function memberExpression(node) {
       obj = `j.super()`;
       break;
 
-    default:
-      console.log("ES6::memberExpression.object => ", object.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("ES6::memberExpression.object => ", object.type);
       break;
   }
 
@@ -1228,8 +1239,8 @@ function memberExpression(node) {
       prop = memberExpression(property);
       break;
 
-    default:
-      console.log("memberExpression.property => ", property.type); // eslint-disable-line
+    default: // eslint-disable-line
+      console.log("memberExpression.property => ", property.type);
       break;
   }
 
@@ -1400,8 +1411,8 @@ function buildAST(ast, wrapExpression = true) {
       case "JSXElement":
         return element(node);
 
-      default:
-        console.log("buildAST => ", node.type); // eslint-disable-line
+      default: // eslint-disable-line
+        console.log("buildAST => ", node.type);
         return "";
     }
   });
