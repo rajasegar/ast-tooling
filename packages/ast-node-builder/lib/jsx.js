@@ -2,6 +2,96 @@ import * as base from "./core/base.js";
 
 import { stringLiteral, numericLiteral, booleanLiteral } from "./babel/base.js";
 
+function objectExpression(node) {
+  let { properties } = node;
+  let str = properties.map((p) => {
+    return property(p);
+  });
+  return `j.objectExpression([${str.join(",")}])`;
+}
+
+function buildValue(node) {
+  switch (node.type) {
+    case "StringLiteral":
+      return stringLiteral(node);
+    case "Literal":
+      return `j.literal(${node.raw})`;
+    case "NumericLiteral":
+      return numericLiteral(node);
+    case "BooleanLiteral":
+      return booleanLiteral(node);
+    case "NullLiteral":
+      return nullLiteral();
+    case "ObjectExpression":
+      return objectExpression(node);
+    case "CallExpression":
+      return callExpression(node);
+    case "ArrayExpression":
+      return arrayExpression(node);
+    case "ArrowFunctionExpression":
+      return arrowFunctionExpression(node);
+    case "Identifier":
+      return identifier(node);
+    case "MemberExpression":
+      return memberExpression(node);
+    case "BinaryExpression":
+      return binaryExpression(node);
+    case "NewExpression":
+      return newExpression(node);
+    case "LogicalExpression":
+      return logicalExpression(node);
+    case "ConditionalExpression":
+      return conditionalExpression(node);
+    case "TemplateLiteral":
+      return templateLiteral(node);
+    case "ClassExpression":
+      return classExpression(node);
+    case "UnaryExpression":
+      return unaryExpression(node);
+    case "AwaitExpression":
+      return awaitExpression(node);
+    case "FunctionExpression":
+      return functionExpression(node);
+    case "JSXElement":
+      return element(node);
+    case "UpdateExpression":
+      return updateExpression(node);
+    default: // eslint-disable-line
+      console.error("ES6::buildValue => ", node.type);
+      return "";
+  }
+}
+
+function property(node) {
+  let { key, value, computed, shorthand } = node;
+  let str = "";
+  switch (node.type) {
+    case "ObjectProperty":
+      str = `j.objectProperty(
+        ${identifier(key)},
+        ${buildValue(value)},
+        ${computed},
+        ${shorthand}
+    )`;
+      break;
+
+    case "Property":
+      str = `j.Property(
+        ${identifier(key)},
+        ${buildValue(value)},
+        ${computed},
+        ${shorthand}
+    )`;
+      break;
+
+    default:
+      console.error("ES6::property => ", node.type);
+      break;
+  }
+
+  return str;
+}
+
 // TODO: Remove from here
 function binaryExpression(node) {
   let { operator, left, right } = node;
@@ -31,7 +121,7 @@ function binaryExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("JSX::binaryExpression::left => ", left.type);
+      console.error("JSX::binaryExpression::left => ", left.type);
       break;
   }
 
@@ -53,7 +143,7 @@ function binaryExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("ES6::binaryExpression::right => ", right.type);
+      console.error("ES6::binaryExpression::right => ", right.type);
       break;
   }
 
@@ -79,7 +169,7 @@ function spreadAttribute(node) {
       break;
 
     default:
-      console.log("JSX::spreadAttribute => ", node.argument.type);
+      console.error("JSX::spreadAttribute => ", node.argument.type);
       break;
   }
   return `j.jsxSpreadAttribute(${str})`;
@@ -104,7 +194,7 @@ function buildAttributeValue(node) {
       break;
 
     default:
-      console.log("JSX::buildAttributeValue => ", node.type);
+      console.error("JSX::buildAttributeValue => ", node.type);
       break;
   }
   return str;
@@ -125,7 +215,7 @@ function attribute(node) {
       break;
 
     default:
-      console.log("JSX::attribute => ", node.type);
+      console.error("JSX::attribute => ", node.type);
       break;
   }
   return str;
@@ -157,7 +247,7 @@ function jsxMemberExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("jsxMemberExpression::object => ", object.type);
+      console.error("jsxMemberExpression::object => ", object.type);
       break;
   }
 
@@ -169,7 +259,7 @@ function jsxMemberExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("jsxMemberExpression.property => ", property.type);
+      console.error("jsxMemberExpression.property => ", property.type);
       break;
   }
 
@@ -201,7 +291,7 @@ function openingElement(node) {
       break;
 
     default:
-      console.log("JSX::openingElement => ", name.type);
+      console.error("JSX::openingElement => ", name.type);
       break;
   }
   return str;
@@ -223,7 +313,7 @@ function closingElement(node) {
       break;
 
     default:
-      console.log("JSX::closingElement => ", name.type);
+      console.error("JSX::closingElement => ", name.type);
       break;
   }
   return str;
@@ -258,7 +348,7 @@ function arrayExpression(node) {
         case "MemberExpression":
           return memberExpression(e);
         default:
-          console.log("arrayExpression => ", e.type);
+          console.error("arrayExpression => ", e.type);
           return "";
       }
     })
@@ -295,7 +385,7 @@ function memberExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("memberExpression => ", object.type);
+      console.error("memberExpression => ", object.type);
       break;
   }
 
@@ -315,7 +405,7 @@ function memberExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.log("memberExpression.property => ", property.type);
+      console.error("memberExpression.property => ", property.type);
       break;
   }
 
@@ -341,7 +431,7 @@ function buildArgs(params) {
         return base.literal(p);
 
       default: // eslint-disable-line
-        console.log("buildArgs => ", p.type);
+        console.error("buildArgs => ", p.type);
         return "";
     }
   });
@@ -381,8 +471,12 @@ function expressionContainer(node) {
       expr = binaryExpression(expression);
       break;
 
+    case "ObjectExpression":
+      expr = objectExpression(expression);
+      break;
+
     default:
-      console.log("JSX::expressionContainer => ", expression.type);
+      console.error("JSX::expressionContainer => ", expression.type);
       break;
   }
 
@@ -410,7 +504,7 @@ function buildChildren(children) {
         break;
 
       default:
-        console.log("JSX::buildChildren => ", child.type);
+        console.error("JSX::buildChildren => ", child.type);
         break;
     }
     return s;

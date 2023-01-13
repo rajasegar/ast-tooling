@@ -129,6 +129,12 @@ function variableDeclaratorQuery$1(node) {
   id: { name: '${node.id.name}' }
   });`;
 }
+function jsxElementQuery$1(node) {
+    let str = `root.find(j.JSXElement, {
+openingElement: { name: { name: '${node.openingElement.name.name}' }}
+})`;
+    return str;
+}
 function expressionStatementQuery$1(node) {
     let { expression } = node;
     let str = '';
@@ -147,6 +153,16 @@ function expressionStatementQuery$1(node) {
       }
       })`;
             break;
+        case 'JSXElement':
+            str = `root.find(j.ExpressionStatement, {
+expression: {
+${jsxElementQuery$1(expression)}
+}
+
+})`;
+            break;
+        default:
+            console.error('expressionStatementQuery => ', node.type);
     }
     return str;
 }
@@ -258,7 +274,8 @@ var query = /*#__PURE__*/Object.freeze({
   exportDefaultDeclarationQuery: exportDefaultDeclarationQuery$1,
   exportNamedDeclarationQuery: exportNamedDeclarationQuery$1,
   identifier: identifier$2,
-  functionDeclaration: functionDeclaration$2
+  functionDeclaration: functionDeclaration$2,
+  jsxElementQuery: jsxElementQuery$1
 });
 
 // Build object query
@@ -616,7 +633,7 @@ var glimmer = /*#__PURE__*/Object.freeze({
   dispatchNodes: dispatchNodes$1
 });
 
-const { assignmentExpression, callExpressionQuery, memberExpressionQuery, literalQuery, newExpressionQuery, expressionStatementQuery, variableDeclaratorQuery, importDeclarationQuery, exportDefaultDeclarationQuery, exportNamedDeclarationQuery, identifier, functionDeclaration } = query;
+const { assignmentExpression, callExpressionQuery, memberExpressionQuery, literalQuery, newExpressionQuery, expressionStatementQuery, variableDeclaratorQuery, importDeclarationQuery, exportDefaultDeclarationQuery, exportNamedDeclarationQuery, identifier, functionDeclaration, jsxElementQuery, } = query;
 // Build the jscodeshift find query from nodes
 function findQuery(node) {
     let str = '';
@@ -656,6 +673,9 @@ function findQuery(node) {
             break;
         case 'AssignmentExpression':
             str = assignmentExpression(node);
+            break;
+        case 'JSXElement':
+            str = jsxElementQuery(node);
             break;
         default:
             console.log('findQuery => ', node.type);

@@ -18,7 +18,8 @@ const {
   exportDefaultDeclarationQuery,
   exportNamedDeclarationQuery,
   identifier,
-  functionDeclaration
+		functionDeclaration,
+		jsxElementQuery,
 } = query;
 
 
@@ -73,6 +74,10 @@ function findQuery(node: Node) {
     case 'AssignmentExpression':
       str = assignmentExpression(node);
       break;
+
+			case 'JSXElement':
+					str = jsxElementQuery(node);
+					break;
 
     default:
       console.log('findQuery => ', node.type);

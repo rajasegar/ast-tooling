@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "start": "rollup -c -w",
+    "dev": "rollup -c -w",
     "build": "rollup -c",
     "test": "jest",
     "coverage": "coveralls",

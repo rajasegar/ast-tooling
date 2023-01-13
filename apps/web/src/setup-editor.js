@@ -38,7 +38,9 @@ export default async function () {
   const extensions = [basicSetup, javascript()];
 
   const { mode } = store.getState();
-  const inputCode = mode === "javascript" ? `foo()` : `{{hello-world}}`;
+  // const inputCode = mode === "javascript" ? `foo()` : `{{hello-world}}`;
+  const inputCode =
+    mode === "javascript" ? `<Link exact />` : `{{hello-world}}`;
 
   const builderEditor = new EditorView({
     state: EditorState.create({
@@ -81,7 +83,7 @@ export default async function () {
 
   let editor = new EditorView({
     state: EditorState.create({
-      doc: "foo()",
+      doc: inputCode,
       extensions: [...extensions, listenChangesExtension],
     }),
     parent: document.getElementById("editor"),

@@ -20,9 +20,11 @@ export function getBuilderApi(code, mode) {
 export function getFinderApi(code, mode) {
   const parser = mode === "javascript" ? parse : etrParse;
   const ast = parser(code);
+  const firstChild = ast.program.body[0];
+  const node = firstChild.expression ? firstChild.expression : firstChild;
   const api =
     mode === "javascript"
-      ? findQuery(ast.program.body[0])
+      ? findQuery(node)
       : hbsFinder.dispatchNodes(ast).join("\n");
   return api;
 }

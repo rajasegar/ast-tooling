@@ -2,7 +2,6 @@ import { parse } from "recast";
 import { es6, glimmer as hbsBuilder } from "ast-node-builder";
 const { buildAST } = es6;
 
-
 function opQueryJS(nodeOp, dest) {
   let str = "";
 
@@ -39,7 +38,7 @@ function opQueryJS(nodeOp, dest) {
 async function opQueryGlimmer(nodeOp, dest) {
   let str = "";
 
-    const { parse } = await import('ember-template-recast');
+  const { parse } = await import("ember-template-recast");
 
   switch (nodeOp) {
     case "remove":
@@ -50,9 +49,9 @@ async function opQueryGlimmer(nodeOp, dest) {
       str = `return ${hbsBuilder.buildAST(parse(dest))};`;
       break;
   }
-    return new Promise((resolve, reject) => {
-	resolve(str);
-    });
+  return new Promise((resolve, reject) => {
+    resolve(str);
+  });
 }
 
 export default async function opQuery(mode, nodeOp, dest) {
@@ -68,4 +67,3 @@ export default async function opQuery(mode, nodeOp, dest) {
   }
   return _query;
 }
-

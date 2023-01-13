@@ -153,6 +153,12 @@ function variableDeclaratorQuery(node: Node): string {
   id: { name: '${node.id.name}' }
   });`;
 }
+function jsxElementQuery(node: Node): string {
+		let str = `root.find(j.JSXElement, {
+openingElement: { name: { name: '${node.openingElement.name.name}' }}
+})`;
+		return str;
+}
 
 function expressionStatementQuery(node: Node): string {
   let { expression } = node;
@@ -172,7 +178,19 @@ function expressionStatementQuery(node: Node): string {
       ${calleeQuery(expression)}
       }
       })`;
-      break;
+					break;
+
+			case 'JSXElement':
+					str = `root.find(j.ExpressionStatement, {
+expression: {
+${jsxElementQuery(expression)}
+}
+
+})`; 
+					break;
+
+			default:
+					console.error('expressionStatementQuery => ', node.type)
   }
 
   return str;
@@ -302,5 +320,6 @@ export {
   exportDefaultDeclarationQuery,
   exportNamedDeclarationQuery,
   identifier,
-  functionDeclaration
+		functionDeclaration,
+		jsxElementQuery,
 };
