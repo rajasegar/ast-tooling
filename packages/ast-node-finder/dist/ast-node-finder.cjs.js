@@ -129,7 +129,7 @@ function variableDeclaratorQuery$1(node) {
   id: { name: '${node.id.name}' }
   });`;
 }
-function jsxElementQuery$1(node) {
+function jsxElementQuery$2(node) {
     let str = `root.find(j.JSXElement, {
 openingElement: { name: { name: '${node.openingElement.name.name}' }}
 })`;
@@ -156,7 +156,7 @@ function expressionStatementQuery$1(node) {
         case 'JSXElement':
             str = `root.find(j.ExpressionStatement, {
 expression: {
-${jsxElementQuery$1(expression)}
+${jsxElementQuery$2(expression)}
 }
 
 })`;
@@ -275,7 +275,7 @@ var query = /*#__PURE__*/Object.freeze({
   exportNamedDeclarationQuery: exportNamedDeclarationQuery$1,
   identifier: identifier$2,
   functionDeclaration: functionDeclaration$2,
-  jsxElementQuery: jsxElementQuery$1
+  jsxElementQuery: jsxElementQuery$2
 });
 
 // Build object query
@@ -528,6 +528,9 @@ function expressionQuery(node) {
         case 'NewExpression':
             str = newExpression(node);
             break;
+        case 'JSXElement':
+            str = jsxElementQuery$1(node);
+            break;
         default:
             console.log('expressionQuery => ', node.type);
             break;
@@ -553,6 +556,12 @@ function dispatchNodes$2(ast, wrapExpression = false) {
                 return '';
         }
     });
+    return str;
+}
+function jsxElementQuery$1(node) {
+    let str = `root.find(j.JSXElement, {
+  openingElement: { name: { name: '${node.openingElement.name.name}' } }
+})`;
     return str;
 }
 
