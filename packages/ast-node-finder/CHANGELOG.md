@@ -1,5 +1,11 @@
 ## [3.0.6](https://github.com/rajasegar/ast-node-finder/compare/v3.0.5...v3.0.6) (2022-04-04)
 
+## 5.1.0
+
+### Minor Changes
+
+- a115622: pushing new build files to npm
+
 ## 5.0.0
 
 ### Major Changes
