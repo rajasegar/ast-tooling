@@ -1,5 +1,12 @@
 # web
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [4c57636]
+  - ast-node-finder@5.0.0
+
 ## 0.0.2
 
 ### Patch Changes
