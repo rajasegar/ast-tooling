@@ -1,5 +1,11 @@
 ## [3.0.19](https://github.com/rajasegar/ast-node-builder/compare/v3.0.18...v3.0.19) (2021-11-10)
 
+## 4.2.0
+
+### Minor Changes
+
+- 9b6ec33: Handle JSX elements in both builder and finder
+
 ## 4.1.0
 
 ### Minor Changes

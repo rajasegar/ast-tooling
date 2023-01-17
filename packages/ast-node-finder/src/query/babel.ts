@@ -2,6 +2,7 @@ import { stripIndent } from 'common-tags';
 
 import { Node, Ast } from '../typings';
 
+
 // Build object query
 function objectQuery(node: Node): string {
   let str = '';
@@ -304,6 +305,11 @@ function expressionQuery(node: Node): string {
     str = newExpression(node);
     break;
 
+		case 'JSXElement':
+		str = jsxElementQuery(node);
+		break;
+
+
     default:
     console.log('expressionQuery => ', node.type);
     break;
@@ -340,3 +346,9 @@ export function dispatchNodes(ast: Ast,  wrapExpression = false): string {
 }
 
 
+function jsxElementQuery(node: Node): string {
+		let str = `root.find(j.JSXElement, {
+  openingElement: { name: { name: '${node.openingElement.name.name}' } }
+})`;
+		return str;
+}
