@@ -1364,6 +1364,8 @@ function buildAST(ast, wrapExpression = true) {
       case "ExpressionStatement":
         return wrapExpression
           ? expressionStatement(node)
+          : node.expression.type === "JSXElement"
+          ? element(node.expression)
           : callExpression(node.expression);
 
       case "IfStatement":
