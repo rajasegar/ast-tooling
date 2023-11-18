@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict';
 
 import * as query from './query/recast';
@@ -7,19 +8,20 @@ import * as glimmer from './glimmer';
 import { Node, Ast } from './typings';
 
 const {
+	functionDeclaration,
+	jsxElementQuery,
+  arrowFunctionExpressionQuery,
   assignmentExpression,
   callExpressionQuery,
-  memberExpressionQuery,
-  literalQuery,
-  newExpressionQuery,
-  expressionStatementQuery,
-  variableDeclaratorQuery,
-  importDeclarationQuery,
   exportDefaultDeclarationQuery,
   exportNamedDeclarationQuery,
+  expressionStatementQuery,
   identifier,
-		functionDeclaration,
-		jsxElementQuery,
+  importDeclarationQuery,
+  literalQuery,
+  memberExpressionQuery,
+  newExpressionQuery,
+  variableDeclaratorQuery,
 } = query;
 
 
@@ -78,6 +80,10 @@ function findQuery(node: Node) {
 			case 'JSXElement':
 					str = jsxElementQuery(node);
 					break;
+
+    case 'ArrowFunctionExpression':
+      str = arrowFunctionExpressionQuery(node);
+        break;
 
     default:
       console.log('findQuery => ', node.type);

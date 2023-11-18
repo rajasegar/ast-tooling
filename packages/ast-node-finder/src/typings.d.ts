@@ -31,5 +31,7 @@ export interface Node {
 }
 
 export interface Ast {
-    body: any,
+		program: {
+				body: any,
+		}
 }

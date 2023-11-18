@@ -1,6 +1,7 @@
+// @ts-nocheck
 import {stripIndent} from 'common-tags';
 
-import { Node, Ast } from './typings';
+import { Node } from './typings';
 
 function textNode(transform: string) : string {
   let str = '';
@@ -51,6 +52,10 @@ function mustacheStatement(node: Node, transform: string): string {
     }
   };`;
   return str;
+}
+
+type Ast = {
+		body: any
 }
 
 function dispatchNodes(ast: Ast, transform = 'return node;'): string[] {

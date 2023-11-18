@@ -1,4 +1,5 @@
 import * as base from "./core/base.js";
+import { arrowFunctionExpression } from "./es6.js";
 
 import { stringLiteral, numericLiteral, booleanLiteral } from "./babel/base.js";
 
@@ -57,7 +58,7 @@ function buildValue(node) {
     case "UpdateExpression":
       return updateExpression(node);
     default: // eslint-disable-line
-      console.error("ES6::buildValue => ", node.type);
+      console.error("JSX::buildValue => ", node.type);
       return "";
   }
 }
@@ -85,7 +86,7 @@ function property(node) {
       break;
 
     default:
-      console.error("ES6::property => ", node.type);
+      console.error("JSX::property => ", node.type);
       break;
   }
 
@@ -143,7 +144,7 @@ function binaryExpression(node) {
       break;
 
     default: // eslint-disable-line
-      console.error("ES6::binaryExpression::right => ", right.type);
+      console.error("JSX::binaryExpression::right => ", right.type);
       break;
   }
 
@@ -473,6 +474,10 @@ function expressionContainer(node) {
 
     case "ObjectExpression":
       expr = objectExpression(expression);
+      break;
+
+    case "ArrayExpression":
+      expr = arrayExpression(expression);
       break;
 
     default:

@@ -1,10 +1,15 @@
+// @ts-nocheck
 import { stripIndent } from 'common-tags';
 
 import { Node, Ast } from '../typings';
 
+import { Expression, CallExpression, Identifier, MemberExpression, ThisExpression } from '@babel/types';
+
+
+type ObjectQueryNode = CallExpression | Identifier | MemberExpression | ThisExpression;
 
 // Build object query
-function objectQuery(node: Node): string {
+function objectQuery(node: Expression): string {
   let str = '';
   switch(node.type) {
     case 'Identifier':

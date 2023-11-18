@@ -377,9 +377,9 @@
               break;
           case 'MemberExpression':
               str = stripIndent `
-      object: { ${objectQuery$1(node.object)} ,
-        property: { name: '${node.property.name}' }
-      }`;
+object: { ${objectQuery$1(node.object)} ,
+property: { name: '${node.property.name}' }
+}`;
               break;
           case 'ThisExpression':
               str = `object: { type: "ThisExpression" }`;
@@ -407,9 +407,9 @@
                   break;
           }
           str = stripIndent `callee: {
-      ${obj},
-      ${prop}
-    }`;
+${obj},
+${prop}
+}`;
       }
       else if (node.type === 'CallExpression') {
           str = ` ${calleeQuery(node.callee)} `;
@@ -438,9 +438,9 @@
               break;
       }
       str = `root.find(j.MemberExpression, {
-    ${obj},
-    ${prop}
-    })`;
+${obj},
+${prop}
+})`;
       return str;
   }
   // Build callExpression query
@@ -466,18 +466,18 @@
       }).join('\n  && ');
       if (filteredArgs.length > 0) {
           str = stripIndent `
-  root.find(j.CallExpression, {
-    ${calleeQuery(node.callee)}
-  })
-  .filter(path => {
-    return ${_filter}
-  })`;
+root.find(j.CallExpression, {
+${calleeQuery(node.callee)}
+})
+.filter(path => {
+return ${_filter}
+})`;
       }
       else {
           str = stripIndent `
-  root.find(j.CallExpression, {
-    ${calleeQuery(node.callee)}
-  })`;
+root.find(j.CallExpression, {
+${calleeQuery(node.callee)}
+})`;
       }
       return str;
   }
@@ -487,8 +487,8 @@
   }
   function variableDeclaratorQuery$1(node) {
       return `root.find(j.VariableDeclarator, {
-  id: { name: '${node.id.name}' }
-  });`;
+id: { name: '${node.id.name}' }
+});`;
   }
   function jsxElementQuery$2(node) {
       let str = `root.find(j.JSXElement, {
@@ -502,17 +502,17 @@ openingElement: { name: { name: '${node.openingElement.name.name}' }}
       switch (expression.type) {
           case 'CallExpression':
               str = `root.find(j.ExpressionStatement, {
-      expression: {
-      ${calleeQuery(expression)}
-      }
-      })`;
+expression: {
+${calleeQuery(expression)}
+}
+})`;
               break;
           case 'MemberExpression':
               str = `root.find(j.ExpressionStatement, {
-      expression: {
-      ${calleeQuery(expression)}
-      }
-      })`;
+expression: {
+${calleeQuery(expression)}
+}
+})`;
               break;
           case 'JSXElement':
               str = `root.find(j.ExpressionStatement, {
@@ -531,7 +531,7 @@ ${jsxElementQuery$2(expression)}
   function newExpressionQuery$1(node) {
       let str = '';
       str = `root.find(j.NewExpression, {
-  callee: { name: '${node.callee.name}' }
+callee: { name: '${node.callee.name}' }
 })`;
       return str;
   }
@@ -539,7 +539,7 @@ ${jsxElementQuery$2(expression)}
   function importDeclarationQuery$1(node) {
       let str = '';
       str = `root.find(j.ImportDeclaration, {
-  source: ${node.source.raw}
+source: ${node.source.raw}
 })`;
       return str;
   }
@@ -548,8 +548,8 @@ ${jsxElementQuery$2(expression)}
       switch (node.declaration.type) {
           case 'CallExpression':
               str = `root.find(j.ExportDefaultDeclaration, {
-  declaration: { ${calleeQuery(node.declaration.callee)} }
-  })`;
+declaration: { ${calleeQuery(node.declaration.callee)} }
+})`;
               break;
           default:
               console.log('exportDefaultDeclaration => ', node.declaration.type);
@@ -561,13 +561,13 @@ ${jsxElementQuery$2(expression)}
       switch (node.declaration.type) {
           case 'CallExpression':
               str = `root.find(j.ExportNamedDeclaration, {
-  declaration: { ${calleeQuery(node.declaration.callee)} }
-  })`;
+declaration: { ${calleeQuery(node.declaration.callee)} }
+})`;
               break;
           case 'FunctionDeclaration':
               str = `root.find(j.ExportNamedDeclaration, {
 declaration: { id: { name: '${node.declaration.id.name}' } }
-  })`;
+})`;
               break;
           default:
               console.log('exportNamedDeclaration => ', node.declaration.type);
@@ -577,15 +577,15 @@ declaration: { id: { name: '${node.declaration.id.name}' } }
   function identifier$2(node) {
       let str = '';
       str = `root.find(j.Identifier, {
-  name: '${node.name}'
-  })`;
+name: '${node.name}'
+})`;
       return str;
   }
   function functionDeclaration$2(node) {
       let str = '';
       str = `root.find(j.FunctionDeclaration, {
-  id: { name: '${node.id.name}' }
-  })`;
+id: { name: '${node.id.name}' }
+})`;
       return str;
   }
   function assignmentExpression$2(node) {
@@ -603,42 +603,49 @@ declaration: { id: { name: '${node.declaration.id.name}' } }
               break;
           case 'MemberExpression':
               _right = stripIndent `
-      right: {
-        ${objectQuery$1(right.object)},
-        property: { name: '${right.property.name}' }
-      }`;
+right: {
+${objectQuery$1(right.object)},
+property: { name: '${right.property.name}' }
+}`;
               break;
           default:
               console.log('assignmentExpression => ', right.type);
               break;
       }
       str = stripIndent `
-  root.find(j.AssignmentExpression, {
-    operator: '${operator}',
-    left: { name: '${left.name}' },
-    ${_right}
-  })
-  `;
+root.find(j.AssignmentExpression, {
+operator: '${operator}',
+left: { name: '${left.name}' },
+${_right}
+})
+`;
       return str;
+  }
+  function arrowFunctionExpressionQuery$1(node) {
+      return `root.find(j.ArrowFunctionExpression, {
+
+})`;
   }
 
   var query = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    arrowFunctionExpressionQuery: arrowFunctionExpressionQuery$1,
     assignmentExpression: assignmentExpression$2,
     callExpressionQuery: callExpressionQuery$1,
+    exportDefaultDeclarationQuery: exportDefaultDeclarationQuery$1,
+    exportNamedDeclarationQuery: exportNamedDeclarationQuery$1,
+    expressionStatementQuery: expressionStatementQuery$1,
+    functionDeclaration: functionDeclaration$2,
+    identifier: identifier$2,
+    importDeclarationQuery: importDeclarationQuery$1,
+    jsxElementQuery: jsxElementQuery$2,
     literalQuery: literalQuery$1,
     memberExpressionQuery: memberExpressionQuery$1,
     newExpressionQuery: newExpressionQuery$1,
-    expressionStatementQuery: expressionStatementQuery$1,
-    variableDeclaratorQuery: variableDeclaratorQuery$1,
-    importDeclarationQuery: importDeclarationQuery$1,
-    exportDefaultDeclarationQuery: exportDefaultDeclarationQuery$1,
-    exportNamedDeclarationQuery: exportNamedDeclarationQuery$1,
-    identifier: identifier$2,
-    functionDeclaration: functionDeclaration$2,
-    jsxElementQuery: jsxElementQuery$2
+    variableDeclaratorQuery: variableDeclaratorQuery$1
   });
 
+  // @ts-nocheck
   // Build object query
   function objectQuery(node) {
       let str = '';
@@ -931,6 +938,7 @@ declaration: { id: { name: '${node.declaration.id.name}' } }
     dispatchNodes: dispatchNodes$2
   });
 
+  // @ts-nocheck
   function textNode(transform) {
       let str = '';
       str = stripIndent `
@@ -1003,7 +1011,8 @@ declaration: { id: { name: '${node.declaration.id.name}' } }
     dispatchNodes: dispatchNodes$1
   });
 
-  const { assignmentExpression, callExpressionQuery, memberExpressionQuery, literalQuery, newExpressionQuery, expressionStatementQuery, variableDeclaratorQuery, importDeclarationQuery, exportDefaultDeclarationQuery, exportNamedDeclarationQuery, identifier, functionDeclaration, jsxElementQuery, } = query;
+  // @ts-nocheck
+  const { functionDeclaration, jsxElementQuery, arrowFunctionExpressionQuery, assignmentExpression, callExpressionQuery, exportDefaultDeclarationQuery, exportNamedDeclarationQuery, expressionStatementQuery, identifier, importDeclarationQuery, literalQuery, memberExpressionQuery, newExpressionQuery, variableDeclaratorQuery, } = query;
   // Build the jscodeshift find query from nodes
   function findQuery(node) {
       let str = '';
@@ -1046,6 +1055,9 @@ declaration: { id: { name: '${node.declaration.id.name}' } }
               break;
           case 'JSXElement':
               str = jsxElementQuery(node);
+              break;
+          case 'ArrowFunctionExpression':
+              str = arrowFunctionExpressionQuery(node);
               break;
           default:
               console.log('findQuery => ', node.type);

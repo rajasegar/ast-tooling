@@ -3,31 +3,31 @@ import {
   breakStatement,
   continueStatement,
   buildCallee,
-  buildElements,
-} from "./core/base.js";
+  buildElements
+} from './core/base.js';
 
 import {
   stringLiteral,
   numericLiteral,
   booleanLiteral,
   nullLiteral,
-  regExpLiteral,
-} from "./babel/base.js";
+  regExpLiteral
+} from './babel/base.js';
 
-import { element } from "./jsx.js";
+import { element } from './jsx.js';
 
 function whileStatement(node) {
-  let str = "";
+  let str = '';
   let { test, body } = node;
   switch (test.type) {
-    case "BinaryExpression":
+    case 'BinaryExpression':
       str = `j.whileStatement(
       ${binaryExpression(test)},
       ${blockStatement(body)}
       )`;
       break;
 
-    case "BooleanLiteral":
+    case 'BooleanLiteral':
       str = `j.whileStatement(
       ${booleanLiteral(test)},
       ${blockStatement(body)}
@@ -35,7 +35,7 @@ function whileStatement(node) {
       break;
 
     default:
-      console.log("ES6::whileStatement => ", test.type);
+      console.log('ES6::whileStatement => ', test.type);
       break;
   }
   return str;
@@ -43,7 +43,7 @@ function whileStatement(node) {
 
 function logicalExpression(node) {
   let { operator, left, right } = node;
-  let str = "";
+  let str = '';
   str = `j.logicalExpression(
   '${operator}',
   ${buildValue(left)},
@@ -54,20 +54,20 @@ function logicalExpression(node) {
 
 function unaryExpression(node) {
   let { argument, operator, prefix } = node;
-  let str = "";
+  let str = '';
   switch (argument.type) {
-    case "NumericLiteral":
+    case 'NumericLiteral':
       str = `j.unaryExpression('${operator}', ${numericLiteral(
         argument
       )}, ${prefix})`;
       break;
-    case "MemberExpression":
+    case 'MemberExpression':
       str = `j.unaryExpression('${operator}', ${memberExpression(
         argument
       )}, ${prefix})`;
       break;
     default:
-      console.log("ES6::unaryExpression => ", argument.type);
+      console.log('ES6::unaryExpression => ', argument.type);
       break;
   }
   return str;
@@ -76,46 +76,46 @@ function unaryExpression(node) {
 function binaryExpression(node) {
   let { operator, left, right } = node;
 
-  let _left = "";
-  let _right = "";
+  let _left = '';
+  let _right = '';
 
   switch (left.type) {
-    case "Identifier":
+    case 'Identifier':
       _left = identifier(left);
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       _left = callExpression(left);
       break;
 
-    case "MemberExpression":
+    case 'MemberExpression':
       _left = memberExpression(left);
       break;
 
     default: // eslint-disable-line
-      console.log("ES6::binaryExpression::left => ", left.type);
+      console.log('ES6::binaryExpression::left => ', left.type);
       break;
   }
 
   switch (right.type) {
-    case "StringLiteral":
+    case 'StringLiteral':
       _right = stringLiteral(right);
       break;
 
-    case "BinaryExpression":
+    case 'BinaryExpression':
       _right = binaryExpression(right);
       break;
 
-    case "Identifier":
+    case 'Identifier':
       _right = identifier(right);
       break;
 
-    case "NumericLiteral":
+    case 'NumericLiteral':
       _right = numericLiteral(right);
       break;
 
     default: // eslint-disable-line
-      console.log("ES6::binaryExpression::right => ", right.type);
+      console.log('ES6::binaryExpression::right => ', right.type);
       break;
   }
 
@@ -128,9 +128,9 @@ function binaryExpression(node) {
 
 function updateExpression(node) {
   let { operator, argument, prefix } = node;
-  let str = "";
+  let str = '';
   switch (argument.type) {
-    case "Identifier":
+    case 'Identifier':
       str = `j.updateExpression(
   '${operator}', 
   ${identifier(argument)},
@@ -138,7 +138,7 @@ function updateExpression(node) {
   )`;
       break;
 
-    case "MemberExpression":
+    case 'MemberExpression':
       str = `j.updateExpression(
       '${operator}',
       ${memberExpression(argument)},
@@ -147,23 +147,23 @@ function updateExpression(node) {
       break;
 
     default:
-      console.log("ES6::updateExpression => ", argument.type);
+      console.log('ES6::updateExpression => ', argument.type);
       break;
   }
 
   return str;
 }
 function switchStatement(node) {
-  let str = "";
+  let str = '';
   let { cases, discriminant } = node;
-  let d = "";
+  let d = '';
   switch (discriminant.type) {
-    case "Identifier":
+    case 'Identifier':
       d = identifier(discriminant);
       break;
 
     default: // eslint-disable-line
-      console.log("switchStatement::discriminant => ", discriminant.type);
+      console.log('switchStatement::discriminant => ', discriminant.type);
       break;
   }
   str = `j.switchStatement(${d},[${buildSwitchCases(cases)}])`;
@@ -174,11 +174,11 @@ function buildSwitchCases(cases) {
   return cases
     .map((c) => {
       let { test, consequent } = c;
-      let str = "";
+      let str = '';
       if (test) {
         switch (test.type) {
           default: // eslint-disable-line
-            console.log("buildSwitchCases => ", test.type);
+            console.log('buildSwitchCases => ', test.type);
             break;
         }
       } else {
@@ -186,23 +186,23 @@ function buildSwitchCases(cases) {
       }
       return str;
     })
-    .join(",");
+    .join(',');
 }
 function forOfStatement(node) {
-  let str = "";
+  let str = '';
   let { left, right, body, each } = node;
-  let _right = "";
+  let _right = '';
   switch (right.type) {
-    case "Identifier":
+    case 'Identifier':
       _right = identifier(right);
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       _right = callExpression(right);
       break;
 
     default:
-      console.log("ES6::forOfStatement.right => ", right.type);
+      console.log('ES6::forOfStatement.right => ', right.type);
       break;
   }
   if (node.await) {
@@ -227,7 +227,7 @@ function forOfStatement(node) {
   return str;
 }
 function forInStatement(node) {
-  let str = "";
+  let str = '';
   let { left, right, body, each } = node;
   str = `j.forInStatement(
   ${variableDeclaration(left)},
@@ -251,7 +251,7 @@ function blockStatement(node) {
   return `j.blockStatement([${buildBlock(node.body)}])`;
 }
 function tryStatement(node) {
-  let str = "";
+  let str = '';
   let { block, handler, finalizer } = node;
   let _handler = handler ? catchClause(handler) : null;
   if (finalizer) {
@@ -271,41 +271,41 @@ function tryStatement(node) {
 
 function forStatement(node) {
   let { init, test, update, body } = node;
-  let str = "";
-  let _init = "";
-  let _test = "";
-  let _update = "";
+  let str = '';
+  let _init = '';
+  let _test = '';
+  let _update = '';
 
   // Building for init
   switch (init.type) {
-    case "VariableDeclaration":
+    case 'VariableDeclaration':
       _init = variableDeclaration(init);
       break;
 
     default: // eslint-disable-line
-      console.log("forStatement::init =>", init.type);
+      console.log('forStatement::init =>', init.type);
       break;
   }
 
   // Building for test
   switch (test.type) {
-    case "BinaryExpression":
+    case 'BinaryExpression':
       _test = binaryExpression(test);
       break;
 
     default: // eslint-disable-line
-      console.log("forStatement::test => ", test.type);
+      console.log('forStatement::test => ', test.type);
       break;
   }
 
   // Building for update
   switch (update.type) {
-    case "UpdateExpression":
+    case 'UpdateExpression':
       _update = updateExpression(update);
       break;
 
     default: // eslint-disable-line
-      console.log("forStatement::test => ", update.type);
+      console.log('forStatement::test => ', update.type);
       break;
   }
 
@@ -318,17 +318,17 @@ function forStatement(node) {
   return str;
 }
 function assignmentExpression(node) {
-  let str = "";
+  let str = '';
   let { operator, left, right } = node;
   switch (left.type) {
-    case "Identifier":
+    case 'Identifier':
       str = `j.assignmentExpression(
         '${operator}',
         ${identifier(left)},
         ${buildValue(right)}
       )`;
       break;
-    case "MemberExpression":
+    case 'MemberExpression':
       str = `j.assignmentExpression(
         '${operator}',
         ${memberExpression(left)},
@@ -340,44 +340,44 @@ function assignmentExpression(node) {
 }
 function ifStatement(node) {
   let { test, consequent, alternate } = node;
-  let str = "";
+  let str = '';
   let condition;
-  if (test.type === "BinaryExpression") {
+  if (test.type === 'BinaryExpression') {
     let { operator, left, right } = test;
-    let _right = "";
-    let _left = "";
+    let _right = '';
+    let _left = '';
     switch (right.type) {
-      case "BooleanLiteral":
+      case 'BooleanLiteral':
         _right = booleanLiteral(right);
         break;
 
-      case "NumericLiteral":
+      case 'NumericLiteral':
         _right = numericLiteral(right);
         break;
 
       default:
-        console.log("ES6::ifStatement.right => ", right.type);
+        console.log('ES6::ifStatement.right => ', right.type);
         break;
     }
 
     switch (left.type) {
-      case "Identifier":
+      case 'Identifier':
         _left = identifier(left);
         break;
 
-      case "BinaryExpression":
+      case 'BinaryExpression':
         _left = binaryExpression(left);
         break;
 
       default:
-        console.log("ES6::ifStatement.left => ", left.type);
+        console.log('ES6::ifStatement.left => ', left.type);
         break;
     }
     condition = `j.binaryExpression(
       '${operator}', 
       ${_left},
       ${_right})`;
-  } else if (test.type === "Identifier") {
+  } else if (test.type === 'Identifier') {
     condition = `j.identifier('${test.name}')`;
   }
 
@@ -397,7 +397,7 @@ function ifStatement(node) {
 }
 
 function functionDeclaration(node) {
-  let str = "";
+  let str = '';
   let { id, body, params, generator } = node;
   if (node.async) {
     str = `(function() {
@@ -424,14 +424,14 @@ function functionDeclaration(node) {
 }
 
 function awaitExpression(node) {
-  let str = "";
+  let str = '';
   let { argument } = node;
   str = `j.awaitExpression(${buildValue(argument)})`;
   return str;
 }
 
 function conditionalExpression(node) {
-  let str = "";
+  let str = '';
   let { test, consequent, alternate } = node;
   str = `j.conditionalExpression(
   ${buildValue(test)},
@@ -450,18 +450,18 @@ function newExpression(node) {
 }
 function throwStatement(node) {
   let { argument } = node;
-  let arg = "";
+  let arg = '';
   switch (argument.type) {
-    case "NewExpression":
+    case 'NewExpression':
       arg = newExpression(argument);
       break;
 
-    case "Identifier":
+    case 'Identifier':
       arg = identifier(argument);
       break;
 
     default: // eslint-disable-line
-      console.log("thowStatement => ", argument.type);
+      console.log('thowStatement => ', argument.type);
       break;
   }
   return `j.throwStatement(
@@ -470,7 +470,7 @@ function throwStatement(node) {
 }
 
 function objectPattern(node) {
-  let str = "";
+  let str = '';
   str = `j.objectPattern([${buildProperties(node.properties)}])`;
   return str;
 }
@@ -480,26 +480,26 @@ function buildProperties(props) {
     .map((p) => {
       return property(p);
     })
-    .join(",");
+    .join(',');
 }
 function variableDeclarator(node) {
-  let str = "";
+  let str = '';
   let { id, init } = node;
   let value = init ? buildValue(init) : null;
   switch (id.type) {
-    case "Identifier":
+    case 'Identifier':
       str = `j.variableDeclarator(
       j.identifier('${id.name}'),
         ${value}
           )`;
       break;
-    case "ObjectPattern":
+    case 'ObjectPattern':
       str = `j.variableDeclarator(
       j.objectPattern([${buildProperties(id.properties)}]),
         ${value}
           )`;
       break;
-    case "ArrayPattern":
+    case 'ArrayPattern':
       str = `j.variableDeclarator(
       j.arrayPattern([${buildElements(id.elements)}]),
         ${value}
@@ -507,7 +507,7 @@ function variableDeclarator(node) {
       break;
 
     default:
-      console.log("ES6::variableDeclarator => ", id.type);
+      console.log('ES6::variableDeclarator => ', id.type);
       break;
   }
   return str;
@@ -526,132 +526,132 @@ function arrayExpression(node) {
   let items = elements
     .map((e) => {
       switch (e.type) {
-        case "UnaryExpression":
+        case 'UnaryExpression':
           return unaryExpression(e);
-        case "SpreadElement":
+        case 'SpreadElement':
           return spreadElement(e);
-        case "StringLiteral":
+        case 'StringLiteral':
           return stringLiteral(e);
-        case "NumericLiteral":
+        case 'NumericLiteral':
           return numericLiteral(e);
         default:
-          console.log("ES6::arrayExpression => ", e.type);
-          return "";
+          console.log('ES6::arrayExpression => ', e.type);
+          return '';
       }
     })
-    .join(",");
+    .join(',');
 
   return `j.arrayExpression([${items}])`;
 }
 
 function buildValue(node) {
   switch (node.type) {
-    case "StringLiteral":
+    case 'StringLiteral':
       return stringLiteral(node);
-    case "NumericLiteral":
+    case 'NumericLiteral':
       return numericLiteral(node);
-    case "BooleanLiteral":
+    case 'BooleanLiteral':
       return booleanLiteral(node);
-    case "NullLiteral":
+    case 'NullLiteral':
       return nullLiteral();
-    case "ObjectExpression":
+    case 'ObjectExpression':
       return objectExpression(node);
-    case "CallExpression":
+    case 'CallExpression':
       return callExpression(node);
-    case "ArrayExpression":
+    case 'ArrayExpression':
       return arrayExpression(node);
-    case "ArrowFunctionExpression":
+    case 'ArrowFunctionExpression':
       return arrowFunctionExpression(node);
-    case "Identifier":
+    case 'Identifier':
       return identifier(node);
-    case "MemberExpression":
+    case 'MemberExpression':
       return memberExpression(node);
-    case "BinaryExpression":
+    case 'BinaryExpression':
       return binaryExpression(node);
-    case "NewExpression":
+    case 'NewExpression':
       return newExpression(node);
-    case "LogicalExpression":
+    case 'LogicalExpression':
       return logicalExpression(node);
-    case "ConditionalExpression":
+    case 'ConditionalExpression':
       return conditionalExpression(node);
-    case "TemplateLiteral":
+    case 'TemplateLiteral':
       return templateLiteral(node);
-    case "ClassExpression":
+    case 'ClassExpression':
       return classExpression(node);
-    case "UnaryExpression":
+    case 'UnaryExpression':
       return unaryExpression(node);
-    case "AwaitExpression":
+    case 'AwaitExpression':
       return awaitExpression(node);
-    case "FunctionExpression":
+    case 'FunctionExpression':
       return functionExpression(node);
-    case "JSXElement":
+    case 'JSXElement':
       return element(node);
-    case "UpdateExpression":
+    case 'UpdateExpression':
       return updateExpression(node);
     default: // eslint-disable-line
-      console.log("ES6::buildValue => ", node.type);
-      return "";
+      console.log('ES6::buildValue => ', node.type);
+      return '';
   }
 }
 function buildBlock(body) {
   // Build the jscodeshift api
   let _ast = body.map((node) => {
     switch (node.type) {
-      case "VariableDeclaration":
+      case 'VariableDeclaration':
         return variableDeclaration(node);
 
-      case "ImportDeclaration":
+      case 'ImportDeclaration':
         return importDeclaration(node);
 
-      case "ExpressionStatement":
+      case 'ExpressionStatement':
         return expressionStatement(node);
 
-      case "IfStatement":
+      case 'IfStatement':
         return ifStatement(node);
 
-      case "FunctionDeclaration":
+      case 'FunctionDeclaration':
         return functionDeclaration(node);
 
-      case "ReturnStatement":
+      case 'ReturnStatement':
         return returnStatement(node);
 
-      case "BreakStatement":
+      case 'BreakStatement':
         return breakStatement();
 
-      case "ThrowStatement":
+      case 'ThrowStatement':
         return throwStatement(node);
 
-      case "ContinueStatement":
+      case 'ContinueStatement':
         return continueStatement();
 
-      case "TryStatement":
+      case 'TryStatement':
         return tryStatement(node);
 
-      case "ForOfStatement":
+      case 'ForOfStatement':
         return forOfStatement(node);
 
-      case "WhileStatement":
+      case 'WhileStatement':
         return whileStatement(node);
 
       default: // eslint-disable-line
-        console.log("ES6::buildBlock => ", node.type);
-        return "";
+        console.log('ES6::buildBlock => ', node.type);
+        return '';
     }
   });
 
-  return _ast.join(",");
+  return _ast.join(',');
 }
 
 function expressionStatement(node) {
   let { expression } = node;
   let { extra } = expression;
-  let str = "";
+  let str = '';
   switch (expression.type) {
-    case "MemberExpression":
+    case 'MemberExpression':
       str = memberExpression(expression);
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       if (extra && extra.parenthesized) {
         str = `j.parenthesizedExpression(
        ${callExpression(expression)}
@@ -661,36 +661,40 @@ function expressionStatement(node) {
       }
       break;
 
-    case "AssignmentExpression":
+    case 'AssignmentExpression':
       str = assignmentExpression(expression);
       break;
 
-    case "Identifier":
+    case 'Identifier':
       str = identifier(expression);
       break;
 
-    case "BinaryExpression":
+    case 'BinaryExpression':
       str = binaryExpression(expression);
       break;
 
-    case "YieldExpression":
+    case 'YieldExpression':
       str = yieldExpression(expression);
       break;
 
-    case "TemplateLiteral":
+    case 'TemplateLiteral':
       str = templateLiteral(expression);
       break;
 
-    case "TaggedTemplateExpression":
+    case 'TaggedTemplateExpression':
       str = taggedTemplateExpression(expression);
       break;
 
-    case "JSXElement":
+    case 'JSXElement':
       str = element(expression);
       break;
 
+    case 'ArrowFunctionExpression':
+      str = arrowFunctionExpression(expression);
+      break;
+
     default: // eslint-disable-line
-      console.log("ES6::expressionStatement => ", expression.type);
+      console.log('ES6::expressionStatement => ', expression.type);
       break;
   }
 
@@ -699,38 +703,38 @@ function expressionStatement(node) {
 
 function arrowFunctionExpression(node) {
   let { params, body } = node;
-  let str = "";
+  let str = '';
 
   switch (body.type) {
-    case "BlockStatement":
+    case 'BlockStatement':
       str = `j.arrowFunctionExpression(
       [${buildArgs(params)}],
       j.blockStatement([${buildBlock(body.body)}])
       )`;
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       str = `j.arrowFunctionExpression(
       [${buildArgs(params)}],
       ${callExpression(body)}
       )`;
       break;
 
-    case "NumericLiteral":
+    case 'NumericLiteral':
       str = `j.arrowFunctionExpression(
       [${buildArgs(params)}],
       ${numericLiteral(body)}
       )`;
       break;
 
-    case "Identifier":
+    case 'Identifier':
       str = `j.arrowFunctionExpression(
       [${buildArgs(params)}],
       ${identifier(body)}
       )`;
       break;
 
-    case "JSXElement":
+    case 'JSXElement':
       str = `j.arrowFunctionExpression(
 				[${buildArgs(params)}],
 				${identifier(body)}
@@ -738,12 +742,13 @@ function arrowFunctionExpression(node) {
       break;
 
     default:
-      console.log("ES6::arrowFunctionExpression => ", body.type);
+      console.log('ES6::arrowFunctionExpression => ', body.type);
       break;
   }
 
   return str;
 }
+
 function yieldExpression(node) {
   let { argument, delegate } = node;
   return `j.yieldExpression(${buildValue(argument)}, ${delegate})`;
@@ -752,71 +757,71 @@ function yieldExpression(node) {
 function buildArgs(params) {
   let str = params.map((p) => {
     switch (p.type) {
-      case "Identifier":
+      case 'Identifier':
         return identifier(p);
 
-      case "SpreadElement":
+      case 'SpreadElement':
         return spreadElement(p);
 
-      case "FunctionExpression":
+      case 'FunctionExpression':
         return functionExpression(p);
 
-      case "CallExpression":
+      case 'CallExpression':
         return callExpression(p);
 
-      case "MemberExpression":
+      case 'MemberExpression':
         return memberExpression(p);
 
-      case "ArrayExpression":
+      case 'ArrayExpression':
         return arrayExpression(p);
 
-      case "ArrowFunctionExpression":
+      case 'ArrowFunctionExpression':
         return arrowFunctionExpression(p);
 
-      case "RestElement":
+      case 'RestElement':
         return restElement(p);
 
-      case "UnaryExpression":
+      case 'UnaryExpression':
         return unaryExpression(p);
 
-      case "ObjectExpression":
+      case 'ObjectExpression':
         return objectExpression(p);
 
-      case "ThisExpression":
+      case 'ThisExpression':
         return `j.thisExpression()`;
 
-      case "StringLiteral":
+      case 'StringLiteral':
         return stringLiteral(p);
 
-      case "NumericLiteral":
+      case 'NumericLiteral':
         return numericLiteral(p);
 
-      case "RegExpLiteral":
+      case 'RegExpLiteral':
         return regExpLiteral(p);
 
-      case "AwaitExpression":
+      case 'AwaitExpression':
         return awaitExpression(p);
 
-      case "TemplateLiteral":
+      case 'TemplateLiteral':
         return templateLiteral(p);
 
-      case "ObjectPattern":
+      case 'ObjectPattern':
         return objectPattern(p);
 
-      case "JSXElement":
+      case 'JSXElement':
         return element(p);
 
       default: // eslint-disable-line
-        console.log("ES6::buildArgs => ", p.type);
-        return "";
+        console.log('ES6::buildArgs => ', p.type);
+        return '';
     }
   });
 
-  return str.join(",");
+  return str.join(',');
 }
 
 function functionExpression(node) {
-  let str = "";
+  let str = '';
   let { id, body, params } = node;
   if (id) {
     str = `j.functionExpression(
@@ -843,18 +848,18 @@ function functionExpression(node) {
 }
 
 function spreadElement(node) {
-  let str = "";
+  let str = '';
   switch (node.argument.type) {
-    case "Identifier":
+    case 'Identifier':
       str = identifier(node.argument);
       break;
 
-    case "ArrayExpression":
+    case 'ArrayExpression':
       str = arrayExpression(node.argument);
       break;
 
     default:
-      console.log("ES6::spreadElement => ", node.argument.type);
+      console.log('ES6::spreadElement => ', node.argument.type);
       break;
   }
   return `j.spreadElement(${str})`;
@@ -862,13 +867,13 @@ function spreadElement(node) {
 
 function templateElementValue(value) {
   let _cooked =
-    (value && value.cooked && value.cooked.replace("\n", "\\n")) || "";
-  let _raw = (value && value.raw && value.raw.replace("\n", "\\n")) || "";
+    (value && value.cooked && value.cooked.replace('\n', '\\n')) || '';
+  let _raw = (value && value.raw && value.raw.replace('\n', '\\n')) || '';
   return `{cooked: "${_cooked}", raw: "${_raw}"}`;
 }
 
 function templateElement(node) {
-  let str = "";
+  let str = '';
   let { value, tail } = node;
   str = `j.templateElement(
   ${templateElementValue(value)},
@@ -877,27 +882,27 @@ function templateElement(node) {
   return str;
 }
 function templateLiteral(node) {
-  let str = "";
+  let str = '';
   let { expressions, quasis } = node;
   let _expressions = expressions
     .map((e) => {
       switch (e.type) {
-        case "Identifier":
+        case 'Identifier':
           return identifier(e);
 
-        case "CallExpression":
+        case 'CallExpression':
           return callExpression(e);
 
-        case "MemberExpression":
+        case 'MemberExpression':
           return memberExpression(e);
 
         default:
-          console.log("ES6::templateLiteral::expressions => ", e.type);
+          console.log('ES6::templateLiteral::expressions => ', e.type);
           break;
       }
     })
-    .join(",");
-  let _quasis = quasis.map((q) => templateElement(q)).join(",");
+    .join(',');
+  let _quasis = quasis.map((q) => templateElement(q)).join(',');
   str = `j.templateLiteral(
   [${_quasis}],
   [${_expressions}]
@@ -907,7 +912,7 @@ function templateLiteral(node) {
 
 function taggedTemplateExpression(node) {
   let { tag, quasi } = node;
-  let str = "";
+  let str = '';
   str = `j.taggedTemplateExpression(
   ${identifier(tag)},
   ${templateLiteral(quasi)}
@@ -916,25 +921,25 @@ function taggedTemplateExpression(node) {
 }
 
 function decorator(node) {
-  let str = "";
+  let str = '';
   switch (node.type) {
-    case "CallExpression":
+    case 'CallExpression':
       str = callExpression(node);
       break;
 
-    case "Identifier":
+    case 'Identifier':
       str = identifier(node);
       break;
 
     default:
-      console.log("decorator => ", node.type);
+      console.log('decorator => ', node.type);
       break;
   }
   return `j.decorator(${str})`;
 }
 
 function classProperty(node) {
-  let str = "";
+  let str = '';
   let { key, value, decorators } = node;
 
   if (decorators && decorators.length > 0) {
@@ -948,7 +953,7 @@ function classProperty(node) {
 
     node.decorators = [${decorators
       .map((d) => decorator(d.expression))
-      .join(",")}];
+      .join(',')}];
     return node;
     }())`;
   } else {
@@ -963,14 +968,14 @@ function classProperty(node) {
   return str;
 }
 function buildClassBody(body) {
-  let str = "";
+  let str = '';
   str = body
     .map((b) => {
       switch (b.type) {
-        case "ClassProperty":
+        case 'ClassProperty':
           return classProperty(b);
 
-        case "ClassMethod":
+        case 'ClassMethod':
           return `(function() {
         var node = j.classMethod(
           '${b.kind}',
@@ -982,24 +987,24 @@ function buildClassBody(body) {
           b.decorators && b.decorators.length > 0
             ? `node.decorators = [${b.decorators
                 .map((d) => decorator(d.expression))
-                .join(",")}];`
-            : ""
+                .join(',')}];`
+            : ''
         }
         return node;
         }())`;
 
         default:
-          console.log("ES6::buildClassBody => ", b.type);
+          console.log('ES6::buildClassBody => ', b.type);
           break;
       }
     })
-    .join(",");
+    .join(',');
 
   return str;
 }
 
 function classExpression(node) {
-  let str = "";
+  let str = '';
   let { id, superClass, body } = node;
   let _super = superClass ? identifier(superClass) : null;
   str = `j.classExpression(
@@ -1011,7 +1016,7 @@ function classExpression(node) {
 }
 
 function classDeclaration(node) {
-  let str = "";
+  let str = '';
   let { id, superClass, body, decorators } = node;
   let _super = superClass ? identifier(superClass) : null;
   if (decorators && decorators.length > 0) {
@@ -1024,7 +1029,7 @@ function classDeclaration(node) {
 
   node.decorators = [${decorators
     .map((d) => decorator(d.expression))
-    .join(",")}]
+    .join(',')}]
   return node;
 
     }())`;
@@ -1039,50 +1044,50 @@ function classDeclaration(node) {
 }
 
 function exportDefaultDeclaration(node) {
-  let str = "";
+  let str = '';
   let { declaration } = node;
   switch (declaration.type) {
-    case "FunctionDeclaration":
+    case 'FunctionDeclaration':
       str = `j.exportDefaultDeclaration(${functionDeclaration(declaration)})`;
       break;
 
-    case "ClassDeclaration":
+    case 'ClassDeclaration':
       str = `j.exportDefaultDeclaration(${classDeclaration(declaration)})`;
       break;
 
-    case "ObjectExpression":
+    case 'ObjectExpression':
       str = `j.exportDefaultDeclaration(${objectExpression(declaration)})`;
       break;
 
     default:
-      console.log("ES6::exportDefaultDeclaration =>", declaration.type); // eslint-disable-line
+      console.log('ES6::exportDefaultDeclaration =>', declaration.type); // eslint-disable-line
   }
 
   return str;
 }
 
 function exportNamedDeclaration(node) {
-  let str = "";
+  let str = '';
   let { declaration } = node;
   switch (declaration.type) {
-    case "FunctionDeclaration":
+    case 'FunctionDeclaration':
       str = functionDeclaration(declaration);
       break;
 
-    case "ClassDeclaration":
+    case 'ClassDeclaration':
       str = classDeclaration(declaration);
       break;
 
-    case "ObjectExpression":
+    case 'ObjectExpression':
       str = objectExpression(declaration);
       break;
 
-    case "VariableDeclaration":
+    case 'VariableDeclaration':
       str = variableDeclaration(declaration);
       break;
 
     default:
-      console.log("ES6::exportNamedDeclaration =>", declaration.type); // eslint-disable-line
+      console.log('ES6::exportNamedDeclaration =>', declaration.type); // eslint-disable-line
   }
 
   return `j.exportNamedDeclaration(${str})`;
@@ -1091,68 +1096,68 @@ function exportNamedDeclaration(node) {
 function returnStatement(node) {
   let { argument: arg } = node;
   if (!arg) {
-    return "j.returnStatement(null)";
+    return 'j.returnStatement(null)';
   }
-  let str = "";
+  let str = '';
   switch (arg.type) {
-    case "CallExpression":
+    case 'CallExpression':
       str = callExpression(arg);
       break;
 
-    case "Identifier":
+    case 'Identifier':
       str = identifier(arg);
       break;
 
-    case "MemberExpression":
+    case 'MemberExpression':
       str = memberExpression(arg);
       break;
 
-    case "BinaryExpression":
+    case 'BinaryExpression':
       str = binaryExpression(arg);
       break;
 
-    case "ObjectExpression":
+    case 'ObjectExpression':
       str = objectExpression(arg);
       break;
 
-    case "NewExpression":
+    case 'NewExpression':
       str = newExpression(arg);
       break;
 
-    case "TemplateLiteral":
+    case 'TemplateLiteral':
       str = templateLiteral(arg);
       break;
 
-    case "UpdateExpression":
+    case 'UpdateExpression':
       str = updateExpression(arg);
       break;
 
-    case "StringLiteral":
+    case 'StringLiteral':
       str = stringLiteral(arg);
       break;
 
-    case "BooleanLiteral":
+    case 'BooleanLiteral':
       str = booleanLiteral(arg);
       break;
 
-    case "UnaryExpression":
+    case 'UnaryExpression':
       str = unaryExpression(arg);
       break;
 
-    case "LogicalExpression":
+    case 'LogicalExpression':
       str = logicalExpression(arg);
       break;
 
-    case "ConditionalExpression":
+    case 'ConditionalExpression':
       str = conditionalExpression(arg);
       break;
 
-    case "JSXElement":
+    case 'JSXElement':
       str = element(arg);
       break;
 
     default: // eslint-disable-line
-      console.log("ES6::returnStatement => ", arg.type);
+      console.log('ES6::returnStatement => ', arg.type);
       break;
   }
 
@@ -1161,23 +1166,23 @@ function returnStatement(node) {
 
 function callExpression(expression) {
   let { arguments: args, callee } = expression;
-  let str = "";
+  let str = '';
   switch (callee.type) {
-    case "MemberExpression":
+    case 'MemberExpression':
       str = `j.callExpression(
           ${memberExpression(callee)},
           [${buildArgs(args)}]
         )`;
       break;
 
-    case "Identifier":
+    case 'Identifier':
       str = `j.callExpression(
           ${identifier(callee)},
           [${buildArgs(args)}]
         )`;
       break;
 
-    case "FunctionExpression":
+    case 'FunctionExpression':
       str = `j.callExpression(
       ${functionExpression(callee)},
       [${buildArgs(args)}]
@@ -1185,7 +1190,7 @@ function callExpression(expression) {
       break;
 
     default:
-      console.log("ES6::callExpression => ", callee.type);
+      console.log('ES6::callExpression => ', callee.type);
       break;
   }
 
@@ -1193,54 +1198,54 @@ function callExpression(expression) {
 }
 
 function memberExpression(node) {
-  let str = "";
+  let str = '';
   let { object, property, computed } = node;
-  let obj = "";
+  let obj = '';
 
   // Constructing object of a MemberExpression
   switch (object.type) {
-    case "ThisExpression":
+    case 'ThisExpression':
       obj = `j.thisExpression()`;
       break;
 
-    case "MemberExpression":
+    case 'MemberExpression':
       obj = `${memberExpression(object)}`;
       break;
 
-    case "Identifier":
+    case 'Identifier':
       obj = identifier(object);
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       obj = callExpression(object);
       break;
 
-    case "Super":
+    case 'Super':
       obj = `j.super()`;
       break;
 
     default: // eslint-disable-line
-      console.log("ES6::memberExpression.object => ", object.type);
+      console.log('ES6::memberExpression.object => ', object.type);
       break;
   }
 
-  let prop = "";
+  let prop = '';
   // Constructing property of a MemberExpression
   switch (property.type) {
-    case "Identifier":
+    case 'Identifier':
       prop = identifier(property);
       break;
 
-    case "CallExpression":
+    case 'CallExpression':
       prop = callExpression(property);
       break;
 
-    case "MemberExpression":
+    case 'MemberExpression':
       prop = memberExpression(property);
       break;
 
     default: // eslint-disable-line
-      console.log("memberExpression.property => ", property.type);
+      console.log('memberExpression.property => ', property.type);
       break;
   }
 
@@ -1284,15 +1289,15 @@ function importDeclaration(node) {
   let specs = specifiers
     .map((s) => {
       switch (s.type) {
-        case "ImportSpecifier":
+        case 'ImportSpecifier':
           return importSpecifier(s);
-        case "ImportDefaultSpecifier":
+        case 'ImportDefaultSpecifier':
           return importDefaultSpecifier(s);
-        case "ImportNamespaceSpecifier":
+        case 'ImportNamespaceSpecifier':
           return importNamespaceSpecifier(s);
       }
     })
-    .join(",");
+    .join(',');
   let str = `j.importDeclaration(
            [${specs}],
     ${stringLiteral(source)}
@@ -1306,14 +1311,14 @@ function objectExpression(node) {
   let str = properties.map((p) => {
     return property(p);
   });
-  return `j.objectExpression([${str.join(",")}])`;
+  return `j.objectExpression([${str.join(',')}])`;
 }
 
 function property(node) {
   let { key, value, computed, shorthand } = node;
-  let str = "";
+  let str = '';
   switch (node.type) {
-    case "ObjectMethod":
+    case 'ObjectMethod':
       str = `j.objectMethod(
         '${node.kind}',
         ${identifier(key)},
@@ -1323,7 +1328,7 @@ function property(node) {
     )`;
       break;
 
-    case "ObjectProperty":
+    case 'ObjectProperty':
       str = `j.objectProperty(
         ${identifier(key)},
         ${buildValue(value)},
@@ -1332,16 +1337,16 @@ function property(node) {
     )`;
       break;
 
-    case "SpreadElement":
+    case 'SpreadElement':
       str = spreadElement(node);
       break;
 
-    case "RestElement":
+    case 'RestElement':
       str = restElement(node);
       break;
 
     default:
-      console.log("ES6::property => ", node.type);
+      console.log('ES6::property => ', node.type);
       break;
   }
 
@@ -1353,69 +1358,69 @@ function buildAST(ast, wrapExpression = true) {
   let _body = ast && ast.program ? ast.program.body : [];
   let _ast = _body.map((node) => {
     switch (node.type) {
-      case "VariableDeclaration":
+      case 'VariableDeclaration':
         return wrapExpression
           ? variableDeclaration(node)
           : variableDeclarator(node.declarations[0]);
 
-      case "ImportDeclaration":
+      case 'ImportDeclaration':
         return importDeclaration(node);
 
-      case "ExpressionStatement":
+      case 'ExpressionStatement':
         return wrapExpression
           ? expressionStatement(node)
-          : node.expression.type === "JSXElement"
+          : node.expression.type === 'JSXElement'
           ? element(node.expression)
           : callExpression(node.expression);
 
-      case "IfStatement":
+      case 'IfStatement':
         return ifStatement(node);
 
-      case "ExportDefaultDeclaration":
+      case 'ExportDefaultDeclaration':
         return exportDefaultDeclaration(node);
 
-      case "ExportNamedDeclaration":
+      case 'ExportNamedDeclaration':
         return exportNamedDeclaration(node);
 
-      case "EmptyStatement":
-        return "j.emptyStatement()";
+      case 'EmptyStatement':
+        return 'j.emptyStatement()';
 
-      case "ClassDeclaration":
+      case 'ClassDeclaration':
         return classDeclaration(node);
 
-      case "FunctionDeclaration":
+      case 'FunctionDeclaration':
         return functionDeclaration(node);
 
-      case "ArrowFunctionExpression":
+      case 'ArrowFunctionExpression':
         return arrowFunctionExpression(node);
 
-      case "ReturnStatement":
+      case 'ReturnStatement':
         return returnStatement(node);
 
-      case "SwitchStatement":
+      case 'SwitchStatement':
         return switchStatement(node);
 
-      case "TryStatement":
+      case 'TryStatement':
         return tryStatement(node);
 
-      case "ForStatement":
+      case 'ForStatement':
         return forStatement(node);
 
-      case "ForInStatement":
+      case 'ForInStatement':
         return forInStatement(node);
 
-      case "ForOfStatement":
+      case 'ForOfStatement':
         return forOfStatement(node);
 
-      case "BlockStatement":
+      case 'BlockStatement':
         return blockStatement(node);
 
-      case "JSXElement":
+      case 'JSXElement':
         return element(node);
 
       default: // eslint-disable-line
-        console.log("buildAST => ", node.type);
-        return "";
+        console.log('buildAST => ', node.type);
+        return '';
     }
   });
 
@@ -1431,4 +1436,5 @@ export {
   classExpression,
   exportDefaultDeclaration,
   exportNamedDeclaration,
+  arrowFunctionExpression
 };
